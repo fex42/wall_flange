@@ -20,7 +20,7 @@ with BuildPart() as wall_flange:
     extrude(amount=wall_thickness)
 
     # fillet on outer flange/pipe edge makes it hopefully more stable
-    edge = wall_flange.edges().filter_by_position(axis=Axis.Z, minimum=wall_thickness-1, maximum=wall_thickness+1)[0]
+    edge = wall_flange.edges().filter_by_position(axis=Axis.Z, minimum=wall_thickness, maximum=wall_thickness)[0]
     fillet(objects=edge, radius=1.0)
 
     # screw holes
