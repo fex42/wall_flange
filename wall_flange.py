@@ -8,6 +8,7 @@ pipe_height = 67.0
 flange_dia = 128.0
 holes_dia = 119.0
 hole_dia = 4.6
+apothema = 5.0
 
 with BuildPart() as wall_flange:
     with BuildSketch():
@@ -22,7 +23,12 @@ with BuildPart() as wall_flange:
     # fillet on outer flange/pipe edge makes it hopefully more stable
     edge = wall_flange.edges().filter_by_position(axis=Axis.Z, minimum=wall_thickness, maximum=wall_thickness)[0]
     fillet(objects=edge, radius=1.0)
-
+    # hexagon grid
+    with BuildSketch() as grid_sk:
+        Circle(radius=pipe_dia/2)
+        with HexLocations(apothema, 11, 10):
+            RegularPolygon(apothema, 6, mode=Mode.SUBTRACT)
+    extrude(amount=wall_thickness)
     # screw holes
     with BuildSketch():
         with PolarLocations(holes_dia/2, 4):
